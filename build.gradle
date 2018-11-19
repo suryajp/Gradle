@@ -7,6 +7,8 @@
  */
 
 // Apply the java-library plugin to add support for Java Library
+version '1.1.0'  
+
 apply plugin: 'java-library'
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'java'
@@ -30,5 +32,21 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+}
+task fatJar(type: Jar) {
+
+    manifest {
+        attributes 'Implementation-Title': 'DigitalPartner Pipelines',
+                'Implementation-Version': version,
+                'Main-Class': mainClassName
+    }
+    //baseName = 'refresh'
+    //baseName = 'r2-local-product'
+    //baseName = 'canopus_refresh'
+      baseName = 'high_priority_refresh'
+    
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    
 }
 
